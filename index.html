@@ -42,10 +42,9 @@
             <!-- Блок 1: Користувач -->
             <div class="card p-5 sm:p-6 rounded-2xl shadow-sm" id="field-employee">
                 <label class="flex items-center gap-2 text-lg font-bold mb-3 text-slate-700"><span>👤</span> Виберіть своє прізвище</label>
-                <div class="relative" id="empSearchContainer">
-                    <input type="text" id="empSearchInput" placeholder="Почніть вводити..." class="input-field" autocomplete="off">
-                    <div id="empDropdown" class="hidden absolute z-20 w-full bg-white border border-gray-200 rounded-xl mt-1 shadow-xl max-h-60 overflow-y-auto"></div>
-                </div>
+                <select id="empSelect" class="input-field mb-2 bg-slate-50 border-slate-200 focus:border-emerald-500 disabled:bg-gray-100 disabled:text-gray-400">
+                    <option value="">-- Оберіть прізвище --</option>
+                </select>
             </div>
 
             <!-- Блок 2: Вибір операції -->
@@ -68,8 +67,8 @@
             <div id="targetWeightContainer" class="hidden fade-in space-y-4">
                 <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2"><span>📦</span> Що отримуємо? (Цільовий продукт)</h3>
                 <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
-                    <div class="pl-2">
+                    <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-orange-500"></div>
+                    <div class="pl-3">
                         <div id="targetDisplayArt" class="text-xs font-bold text-orange-600 mb-0.5"></div>
                         <div id="targetDisplayName" class="text-sm sm:text-base font-bold text-slate-700"></div>
                     </div>
@@ -194,6 +193,7 @@
 
         async function loadData() {
             document.getElementById('dataLoading').classList.remove('hidden');
+            document.getElementById('empSelect').disabled = true;
             try {
                 if (GOOGLE_SCRIPT_URL !== 'ВАШ_URL_СКРИПТА_ТУТ' && navigator.onLine) {
                     const res = await fetch(GOOGLE_SCRIPT_URL + '?action=get_data');
@@ -202,22 +202,18 @@
             } catch (e) { appData = JSON.parse(JSON.stringify(MOCK_DATA)); } 
             finally {
                 document.getElementById('dataLoading').classList.add('hidden');
+                document.getElementById('empSelect').disabled = false;
                 initUserDropdown(); renderTargetOptions();
             }
         }
 
         function initUserDropdown() {
-            const inp = document.getElementById('empSearchInput'), drop = document.getElementById('empDropdown');
-            inp.addEventListener('input', (e) => {
-                drop.innerHTML = ''; drop.classList.remove('hidden');
-                const f = appData.users.filter(u => u.toLowerCase().includes(e.target.value.toLowerCase()));
-                f.forEach(emp => {
-                    const d = document.createElement('div'); d.className = 'p-4 hover:bg-emerald-50 cursor-pointer border-b font-medium'; d.textContent = emp;
-                    d.onclick = () => { inp.value = emp; currentFormState.user = emp; drop.classList.add('hidden'); validateForm(); };
-                    drop.appendChild(d);
-                });
+            const s = document.getElementById('empSelect');
+            appData.users.forEach(u => s.add(new Option(u, u)));
+            s.addEventListener('change', (e) => {
+                currentFormState.user = e.target.value;
+                validateForm();
             });
-            document.addEventListener('click', (e) => { if (!document.getElementById('empSearchContainer').contains(e.target)) drop.classList.add('hidden'); });
         }
 
         function renderTargetOptions() {
@@ -239,9 +235,9 @@
             // Render Ingredients
             recipe.ingredients.forEach((ing) => {
                 document.getElementById('ingredientsList').innerHTML += `
-                    <div class="bg-white p-4 rounded-xl border border-green-200 flex items-center justify-between gap-3 relative">
-                        <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500"></div>
-                        <div class="pl-2 flex-1"><div class="text-xs font-bold text-green-600">${ing.art}</div><div class="text-sm font-bold text-slate-700">${ing.name}</div></div>
+                    <div class="bg-white p-4 rounded-xl border border-green-200 flex items-center justify-between gap-3 relative overflow-hidden">
+                        <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-green-500"></div>
+                        <div class="pl-3 flex-1"><div class="text-xs font-bold text-green-600">${ing.art}</div><div class="text-sm font-bold text-slate-700">${ing.name}</div></div>
                         <div class="flex items-center gap-2"><input type="number" data-art="${ing.art}" data-name="${ing.name}" data-unit="КГ" placeholder="0" class="val-input ing-input input-field text-center font-bold text-green-700 w-24 py-2"><span class="text-sm font-bold text-slate-400">КГ</span></div>
                     </div>`;
             });
@@ -256,13 +252,13 @@
             if (recipe.preservatives && recipe.preservatives.length > 0) {
                 recipe.preservatives.forEach((pres) => {
                     document.getElementById('preservativesList').innerHTML += `
-                        <div class="bg-cyan-50 p-4 rounded-xl border border-cyan-200 flex flex-col justify-between gap-3 relative">
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-cyan-500"></div>
-                            <div class="flex justify-between items-center pl-2 w-full">
+                        <div class="bg-cyan-50 p-4 rounded-xl border border-cyan-200 flex flex-col justify-between gap-3 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-cyan-500"></div>
+                            <div class="flex justify-between items-center pl-3 w-full">
                                 <div class="flex-1"><div class="text-xs font-bold text-cyan-600">${pres.art}</div><div class="text-sm font-bold text-slate-700">${pres.name}</div></div>
                                 <div class="flex items-center gap-2"><input type="number" data-art="${pres.art}" data-name="${pres.name}" data-unit="ГР" placeholder="0" class="val-input pres-input input-field text-center font-bold text-cyan-700 w-24 py-2"><span class="text-sm font-bold text-slate-400">ГР</span></div>
                             </div>
-                            <div class="pl-2"><span class="text-[11px] font-bold text-cyan-700 bg-cyan-100 px-2 py-1 rounded-md inline-block">💡 Рецепт: 10гр на 10 кг готового продукту</span></div>
+                            <div class="pl-3"><span class="text-[11px] font-bold text-cyan-700 bg-cyan-100 px-2 py-1 rounded-md inline-block">💡 Рецепт: 10гр на 10 кг готового продукту</span></div>
                         </div>`;
                 });
                 document.getElementById('preservativesBlock').classList.remove('hidden');
@@ -272,9 +268,9 @@
             if (recipe.byProducts && recipe.byProducts.length > 0) {
                 recipe.byProducts.forEach((bp) => {
                     document.getElementById('byProductsList').innerHTML += `
-                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 flex items-center justify-between gap-3 relative">
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
-                            <div class="pl-2 flex-1"><div class="text-xs font-bold text-amber-600">${bp.art}</div><div class="text-sm font-bold text-slate-700">${bp.name}</div></div>
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 flex items-center justify-between gap-3 relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-amber-500"></div>
+                            <div class="pl-3 flex-1"><div class="text-xs font-bold text-amber-600">${bp.art}</div><div class="text-sm font-bold text-slate-700">${bp.name}</div></div>
                             <div class="flex items-center gap-2"><input type="number" data-art="${bp.art}" data-name="${bp.name}" data-unit="КГ" placeholder="0" class="val-input bp-input input-field text-center font-bold text-amber-700 w-24 py-2"><span class="text-sm font-bold text-slate-400">КГ</span></div>
                         </div>`;
                 });
@@ -292,13 +288,29 @@
             const targetWt = parseFloat(document.getElementById('targetWeight').value) || 0;
             if(targetWt <= 0) isValid = false;
 
-            // 1. Валідація Інгредієнтів (Має бути хоча б 1 заповнений)
-            let hasIngredients = false;
+            // 1. Валідація Інгредієнтів (Має бути заповнений ТІЛЬКИ 1)
+            let filledCount = 0;
             const ingInputs = document.querySelectorAll('.ing-input');
+            const ingErrorMsg = document.getElementById('ingErrorMsg');
+            
             if (ingInputs.length > 0) {
-                ingInputs.forEach(inp => { if (parseFloat(inp.value) > 0) hasIngredients = true; });
-                if (!hasIngredients) { isValid = false; document.getElementById('ingErrorMsg').classList.remove('hidden'); } 
-                else { document.getElementById('ingErrorMsg').classList.add('hidden'); }
+                ingInputs.forEach(inp => { 
+                    inp.classList.remove('error-ring'); // Скидаємо попередні помилки
+                    if (parseFloat(inp.value) > 0) filledCount++; 
+                });
+                
+                if (filledCount === 0) { 
+                    isValid = false; 
+                    ingErrorMsg.textContent = 'Заповніть хоча б один інгредієнт!';
+                    ingErrorMsg.classList.remove('hidden'); 
+                } else if (filledCount > 1) { // Умова АБО / АБО
+                    isValid = false;
+                    ingErrorMsg.innerHTML = '⚠️ <b>Увага:</b> Заповніть ТІЛЬКИ ОДИН інгредієнт (АБО / АБО)!';
+                    ingErrorMsg.classList.remove('hidden');
+                    ingInputs.forEach(inp => { if (parseFloat(inp.value) > 0) inp.classList.add('error-ring'); });
+                } else { 
+                    ingErrorMsg.classList.add('hidden'); 
+                }
             }
 
             // 2. Валідація Консерванту (Бензоату)
