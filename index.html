@@ -10,60 +10,27 @@
     
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Примусова світла тема */
-        :root {
-            color-scheme: light;
-            --bg-color: #f8fafc;
-            --card-bg-color: #ffffff;
-            --text-color: #1e293b;
-            --text-muted-color: #64748b;
-            --item-bg-color: #f1f5f9;
-            --border-color: #e2e8f0;
-            --active-btn-bg: #10b981;
-        }
+        :root { color-scheme: light; --bg-color: #f8fafc; --card-bg-color: #ffffff; --text-color: #1e293b; --text-muted-color: #64748b; --border-color: #e2e8f0; }
         body { background-color: var(--bg-color); color: var(--text-color); -webkit-tap-highlight-color: transparent; padding-bottom: 3rem; }
         .card { background-color: var(--card-bg-color); border: 1px solid var(--border-color); }
         .input-field { width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: 0.75rem; background-color: #fff; font-size: 1.125rem; outline: none; transition: all 0.2s; }
         .input-field:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1); }
-        
         .modal-overlay { background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(4px); transition: opacity 0.3s ease; }
         .toast-content { transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease; }
-        
-        /* Анімації */
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .error-ring { animation: errorPulse 1.5s infinite; border-color: #ef4444 !important; }
+        .error-ring { animation: errorPulse 1.5s infinite; border-color: #ef4444 !important; background-color: #fef2f2 !important;}
         @keyframes errorPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.5); } 50% { box-shadow: 0 0 0 4px rgba(239, 68, 68, 0); } }
     </style>
 </head>
 <body class="font-sans antialiased">
-    <script>
-        const manifest = {
-            "name": "Переробка",
-            "short_name": "Переробка",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#f8fafc",
-            "theme_color": "#10b981",
-            "icons": [{"src": "https://foodline-production.com/wp-content/uploads/2021/10/3752781497_3752781497.webp", "sizes": "192x192", "type": "image/webp"}]
-        };
-        document.getElementById('manifest-link').href = 'data:application/manifest+json;charset=utf-8,' + encodeURIComponent(JSON.stringify(manifest));
-    </script>
-
     <div class="container mx-auto max-w-2xl p-4 sm:p-6 relative">
         <!-- HEADER -->
         <header class="flex justify-between items-center mb-6 pb-4 border-b border-gray-200">
-            <div class="w-1/3 flex flex-col justify-center">
-                <div id="current-date" class="text-xs sm:text-sm font-bold text-slate-500 leading-tight"></div>
-            </div>
-            
-            <div class="w-1/3 flex justify-center">
-                <img src="https://foodline-production.com/wp-content/uploads/2021/10/3752781497_3752781497.webp" alt="Logo" class="h-10 sm:h-12 w-auto object-contain rounded-lg bg-white p-1 shadow-sm">
-            </div>
-
+            <div class="w-1/3 flex flex-col justify-center"><div id="current-date" class="text-xs sm:text-sm font-bold text-slate-500 leading-tight"></div></div>
+            <div class="w-1/3 flex justify-center"><img src="https://foodline-production.com/wp-content/uploads/2021/10/3752781497_3752781497.webp" alt="Logo" class="h-10 sm:h-12 w-auto object-contain rounded-lg bg-white p-1 shadow-sm"></div>
             <div class="w-1/3 flex justify-end">
-                <div class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full border bg-white flex items-center gap-2 shadow-sm" id="networkStatusBtn">
+                <div class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-full border bg-white flex items-center gap-2 shadow-sm">
                     <span class="w-2.5 h-2.5 rounded-full bg-green-500" id="statusDot"></span>
                     <span id="statusText" class="text-slate-600">Онлайн</span>
                 </div>
@@ -72,54 +39,34 @@
 
         <!-- MAIN FORM -->
         <div id="main-form" class="space-y-6 fade-in">
-            <div class="text-center mb-2">
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-800">Переробка сировини</h1>
-                <p class="text-slate-500 font-medium mt-1">Реєстрація виробничих операцій</p>
-            </div>
-            
             <!-- Блок 1: Користувач -->
             <div class="card p-5 sm:p-6 rounded-2xl shadow-sm" id="field-employee">
-                <label class="flex items-center gap-2 text-lg font-bold mb-3 text-slate-700">
-                    <span>👤</span> Виберіть своє прізвище
-                </label>
+                <label class="flex items-center gap-2 text-lg font-bold mb-3 text-slate-700"><span>👤</span> Виберіть своє прізвище</label>
                 <div class="relative" id="empSearchContainer">
                     <input type="text" id="empSearchInput" placeholder="Почніть вводити..." class="input-field" autocomplete="off">
                     <div id="empDropdown" class="hidden absolute z-20 w-full bg-white border border-gray-200 rounded-xl mt-1 shadow-xl max-h-60 overflow-y-auto"></div>
                 </div>
-                <p class="error-msg hidden text-red-500 text-sm mt-2 font-semibold">Будь ласка, оберіть прізвище зі списку</p>
             </div>
 
             <!-- Блок 2: Вибір операції -->
             <div class="card p-5 sm:p-6 rounded-2xl shadow-sm relative overflow-hidden" id="field-operation">
-                <label class="flex items-center gap-2 text-lg font-bold mb-3 text-slate-700">
-                    <span>⚙️</span> Оберіть процес
-                </label>
-                
-                <!-- Індикатор завантаження даних -->
-                <div id="dataLoading" class="hidden flex items-center justify-center py-4 text-emerald-600 font-medium gap-2">
-                    <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-emerald-600"></div>
-                    Завантаження довідників...
-                </div>
-
-                <select id="targetSelect" class="input-field mb-2 bg-slate-50 border-slate-200 focus:border-emerald-500 focus:ring-emerald-500 disabled:bg-gray-100 disabled:text-gray-400">
+                <label class="flex items-center gap-2 text-lg font-bold mb-3 text-slate-700"><span>⚙️</span> Оберіть процес</label>
+                <div id="dataLoading" class="hidden flex items-center justify-center py-4 text-emerald-600 font-medium gap-2"><div class="animate-spin rounded-full h-5 w-5 border-b-2 border-emerald-600"></div>Завантаження довідників...</div>
+                <select id="targetSelect" class="input-field mb-2 bg-slate-50 border-slate-200 focus:border-emerald-500 disabled:bg-gray-100 disabled:text-gray-400">
                     <option value="">-- Оберіть сировину --</option>
                 </select>
             </div>
 
-            <!-- Блок 3: Що використовуємо (Інгредієнти) -->
+            <!-- Блок 3: Інгредієнти -->
             <div id="ingredientsBlock" class="hidden fade-in space-y-4">
-                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2">
-                    <span>⚖️</span> Використана сировина:
-                </h3>
+                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2"><span>⚖️</span> Використана сировина:</h3>
                 <div id="ingredientsList" class="space-y-3"></div>
+                <p id="ingErrorMsg" class="hidden text-red-500 text-sm font-bold px-2">Заповніть хоча б один інгредієнт!</p>
             </div>
 
-            <!-- Блок 4: Що отримуємо (Цільовий продукт) -->
+            <!-- Блок 4: Цільовий продукт -->
             <div id="targetWeightContainer" class="hidden fade-in space-y-4">
-                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2">
-                    <span>📦</span> Що отримуємо? (Цільовий продукт)
-                </h3>
-                
+                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2"><span>📦</span> Що отримуємо? (Цільовий продукт)</h3>
                 <div class="bg-orange-50 p-4 rounded-xl border border-orange-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative overflow-hidden">
                     <div class="absolute left-0 top-0 bottom-0 w-1 bg-orange-500"></div>
                     <div class="pl-2">
@@ -127,7 +74,7 @@
                         <div id="targetDisplayName" class="text-sm sm:text-base font-bold text-slate-700"></div>
                     </div>
                     <div class="flex items-center gap-2 w-full sm:w-auto">
-                        <input type="number" id="targetWeight" placeholder="0.00" step="0.01" min="0" class="val-input target-input input-field text-center font-bold text-orange-700 w-full sm:w-28 py-2 border-orange-200 focus:border-orange-500 focus:ring-orange-500">
+                        <input type="number" id="targetWeight" placeholder="0.00" step="0.01" min="0" class="val-input target-input input-field text-center font-bold text-orange-700 w-full sm:w-28 py-2 border-orange-200 focus:border-orange-500">
                         <span class="text-sm font-bold text-slate-400">КГ</span>
                     </div>
                 </div>
@@ -135,33 +82,31 @@
 
             <!-- Блок 5: Консервант -->
             <div id="preservativesBlock" class="hidden fade-in space-y-4">
-                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2">
-                    <span>🧪</span> Консервант:
-                </h3>
+                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2"><span>🧪</span> Консервант:</h3>
                 <div id="preservativesList" class="space-y-3"></div>
+                <p id="presErrorMsg" class="hidden text-red-600 text-sm font-bold bg-red-50 p-3 rounded-lg border border-red-200 shadow-sm">
+                    ⚠️ Порушення рецепта! Додано невірну кількість бензоату.
+                    <br><span id="expectedPres" class="text-red-800 font-black"></span>
+                </p>
             </div>
 
             <!-- Блок 6: Побічний продукт -->
             <div id="byProductsBlock" class="hidden fade-in space-y-4">
-                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2">
-                    <span>🔄</span> Побічний продукт:
-                </h3>
+                <h3 class="text-xl font-bold text-slate-800 flex items-center gap-2 px-2 mt-2"><span>🔄</span> Побічний продукт:</h3>
                 <div id="byProductsList" class="space-y-3"></div>
             </div>
 
             <button id="btnPreview" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white text-xl font-bold rounded-2xl shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2 mt-8 opacity-50 cursor-not-allowed" disabled>
-                <span>Перевірити та Завершити</span>
-                <span class="text-2xl">→</span>
+                <span>Перевірити та Завершити</span> <span class="text-2xl">→</span>
             </button>
         </div>
     </div>
 
-    <!-- МОДАЛЬНЕ ВІКНО ПІДТВЕРДЖЕННЯ -->
+    <!-- МОДАЛКА -->
     <div id="confirmModal" class="fixed inset-0 hidden items-center justify-center modal-overlay z-50 p-4">
         <div class="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl max-h-[90vh] flex flex-col">
             <div class="text-center border-b pb-4 mb-4">
                 <h3 class="text-2xl font-bold text-slate-800">Перевірка даних</h3>
-                <p class="text-sm text-slate-500 mt-1 font-mono bg-slate-100 inline-block px-2 py-1 rounded" id="opIdDisplay"></p>
             </div>
             
             <div class="overflow-y-auto flex-1 pr-2 space-y-4 text-sm sm:text-base">
@@ -169,40 +114,27 @@
                     <span class="text-slate-500 text-xs font-bold uppercase tracking-wider block mb-1">Виконавець</span>
                     <span class="font-bold text-slate-800" id="previewUser"></span>
                 </div>
-
                 <div class="bg-green-50 p-3 rounded-xl border border-green-100">
                     <span class="text-green-700 text-xs font-bold uppercase tracking-wider block mb-2">Використано сировини</span>
-                    <ul id="previewIngredients" class="space-y-2 divide-y divide-green-100/50">
-                        <!-- Інгредієнти -->
-                    </ul>
+                    <ul id="previewIngredients" class="space-y-2 divide-y divide-green-100/50"></ul>
                 </div>
-
                 <div class="bg-orange-50 p-3 rounded-xl border border-orange-100">
                     <span class="text-orange-600 text-xs font-bold uppercase tracking-wider block mb-1">Отримано (Результат)</span>
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-slate-800" id="previewTargetName"></span>
-                        <span class="font-black text-orange-600 text-lg" id="previewTargetWeight"></span>
-                    </div>
+                    <ul id="previewTarget" class="space-y-2 divide-y divide-orange-100/50"></ul>
                 </div>
-
                 <div id="previewPreservativesContainer" class="bg-cyan-50 p-3 rounded-xl border border-cyan-100 hidden">
                     <span class="text-cyan-700 text-xs font-bold uppercase tracking-wider block mb-2">Консервант</span>
-                    <ul id="previewPreservatives" class="space-y-2 divide-y divide-cyan-100/50">
-                        <!-- Консерванти -->
-                    </ul>
+                    <ul id="previewPreservatives" class="space-y-2 divide-y divide-cyan-100/50"></ul>
                 </div>
-
                 <div id="previewByProductsContainer" class="bg-amber-50 p-3 rounded-xl border border-amber-100 hidden">
                     <span class="text-amber-700 text-xs font-bold uppercase tracking-wider block mb-2">Побічний продукт</span>
-                    <ul id="previewByProducts" class="space-y-2 divide-y divide-amber-100/50">
-                        <!-- Побічні продукти -->
-                    </ul>
+                    <ul id="previewByProducts" class="space-y-2 divide-y divide-amber-100/50"></ul>
                 </div>
             </div>
 
             <div class="flex gap-3 mt-6 pt-4 border-t">
                 <button id="btnCancel" class="flex-1 py-3.5 bg-slate-100 text-slate-600 rounded-xl font-bold hover:bg-slate-200 transition-colors">Змінити</button>
-                <button id="btnSubmit" class="flex-1 py-3.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-md transition-colors flex justify-center items-center gap-2">
+                <button id="btnSubmit" class="flex-1 py-3.5 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 shadow-md flex justify-center items-center gap-2">
                     <span id="submitSpinner" class="hidden animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
                     <span>Відправити</span>
                 </button>
@@ -210,7 +142,7 @@
         </div>
     </div>
 
-    <!-- TOAST ПОВІДОМЛЕННЯ -->
+    <!-- TOAST -->
     <div id="customToast" class="fixed inset-0 hidden items-center justify-center modal-overlay z-[100] p-4 opacity-0 pointer-events-none">
         <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full text-center toast-content scale-90 opacity-0" id="customToastContent">
             <div class="text-6xl mb-4" id="toastIcon"></div>
@@ -220,22 +152,17 @@
     </div>
 
     <script>
-        // ==========================================
-        // НАЛАШТУВАННЯ (URL ВАШОГО СКРИПТА)
-        // Вставте сюди URL розгорнутого Google Apps Script!
-        // ==========================================
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyaq7R3v3LGz9B9SEjKMiUmMUqQbwam_RHaHF32qrc8lq7cVT9BBCVP6-NtcgKCcWS_Gg/exec'; 
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyBkkgnPgiDKalQcZwq8BGAgx8eDfGiTTsMtQPY7KoRSUvT9Lx2QuaE7b7icXSuG5xGiA/exec'; // Вставте URL GAS
         const OFFLINE_QUEUE_KEY = 'foodline_raw_offline_queue';
 
-        // ТЕСТОВІ ДАНІ (згідно ваших скріншотів)
-        // Вони використовуються, поки не підключений реальний GAS
         const MOCK_DATA = {
             users: ["Корнієнко Жанна Василівна", "Бойко Світлана Петрівна"],
             recipes: [
                 {
                     targetArt: "VEG-L-019", targetName: "Часниковий сік (власн.виробн)",
                     ingredients: [
-                        { art: "VEG-D-016", name: "Часник свіжий", unit: "КГ" }
+                        { art: "VEG-D-016", name: "Часник свіжий", unit: "КГ" },
+                        { art: "VEG-F-017", name: "Часникова паста (власн.виробн)", unit: "КГ" } // ДОДАНО УМОВУ "АБО"
                     ],
                     preservatives: [
                         { art: "ADD-D-002", name: "Бензонат натрію (гранула)", unit: "ГР" }
@@ -246,310 +173,180 @@
                 },
                 {
                     targetArt: "SPC-L-021", targetName: "Імбирний сік (власн.виробн)",
-                    ingredients: [
-                        { art: "SPC-D-018", name: "Імбир свіжий", unit: "КГ" }
-                    ],
-                    preservatives: [
-                        { art: "ADD-D-002", name: "Бензонат натрію (гранула)", unit: "ГР" }
-                    ],
-                    byProducts: []
-                },
-                {
-                    targetArt: "SPC-D-040", targetName: "Паприка різана червона 1 х 1",
-                    ingredients: [
-                        { art: "SPC-D-042", name: "Паприка різана червона 3 х 3", unit: "КГ" }
-                    ],
-                    preservatives: [],
-                    byProducts: []
-                },
-                {
-                    targetArt: "SPC-D-052", targetName: "Перець Чилі червоний дроблений 1 х 1",
-                    ingredients: [
-                        { art: "SPC-D-053", name: "Перець Чилі червоний дроблений 3 х 3", unit: "КГ" }
-                    ],
-                    preservatives: [],
+                    ingredients: [ { art: "SPC-D-018", name: "Імбир свіжий", unit: "КГ" } ],
+                    preservatives: [ { art: "ADD-D-002", name: "Бензонат натрію (гранула)", unit: "ГР" } ],
                     byProducts: []
                 }
             ]
         };
 
-        // Стан додатку
         let appData = { users: [], recipes: [] };
-        let currentFormState = {
-            user: '',
-            targetId: '',
-            targetKg: 0,
-            ingredients: [], // [{art, name, val, unit}]
-            preservatives: [], // [{art, name, val, unit}]
-            byProducts: [], // [{art, name, val, unit}]
-            operationId: ''
-        };
+        let currentFormState = { user: '', targetId: '', targetKg: 0, ingredients: [], preservatives: [], byProducts: [], operationId: '' };
 
         document.addEventListener('DOMContentLoaded', initApp);
 
         function initApp() {
-            updateClock();
-            setInterval(updateClock, 60000);
-            updateNetworkStatus();
-            
+            updateClock(); setInterval(updateClock, 60000); updateNetworkStatus();
             window.addEventListener('online', () => { updateNetworkStatus(); processOfflineQueue(); });
             window.addEventListener('offline', updateNetworkStatus);
-
-            setupEventListeners();
-            loadData(); // Завантаження довідників
+            setupEventListeners(); loadData();
         }
 
-        // Завантаження даних (Спроба з GAS, якщо ні - беремо Mock)
         async function loadData() {
             document.getElementById('dataLoading').classList.remove('hidden');
-            document.getElementById('targetSelect').disabled = true;
-            document.getElementById('empSearchInput').disabled = true;
-
             try {
                 if (GOOGLE_SCRIPT_URL !== 'ВАШ_URL_СКРИПТА_ТУТ' && navigator.onLine) {
                     const res = await fetch(GOOGLE_SCRIPT_URL + '?action=get_data');
                     appData = await res.json();
-                } else {
-                    console.log("Використання тестових даних (Mock Data)");
-                    appData = JSON.parse(JSON.stringify(MOCK_DATA)); 
-                }
-            } catch (error) {
-                console.error("Помилка завантаження даних, використовуємо Mock", error);
-                appData = JSON.parse(JSON.stringify(MOCK_DATA));
-            } finally {
+                } else { appData = JSON.parse(JSON.stringify(MOCK_DATA)); }
+            } catch (e) { appData = JSON.parse(JSON.stringify(MOCK_DATA)); } 
+            finally {
                 document.getElementById('dataLoading').classList.add('hidden');
-                document.getElementById('targetSelect').disabled = false;
-                document.getElementById('empSearchInput').disabled = false;
-                
-                initUserDropdown();
-                renderTargetOptions();
+                initUserDropdown(); renderTargetOptions();
             }
         }
 
-        // Ініціалізація випадаючого спипису користувачів
         function initUserDropdown() {
-            const searchInput = document.getElementById('empSearchInput');
-            const dropdown = document.getElementById('empDropdown');
-
-            function renderList(filter = '') {
-                dropdown.innerHTML = '';
-                const filtered = appData.users.filter(emp => emp.toLowerCase().includes(filter.toLowerCase()));
-                if(filtered.length === 0) {
-                    dropdown.innerHTML = '<div class="p-3 text-gray-500 text-center">Нічого не знайдено</div>';
-                    return;
-                }
-                filtered.forEach(emp => {
-                    const item = document.createElement('div');
-                    item.className = 'p-4 hover:bg-emerald-50 cursor-pointer border-b border-gray-100 text-lg transition-colors font-medium text-slate-700';
-                    item.textContent = emp;
-                    item.onclick = () => {
-                        searchInput.value = emp;
-                        currentFormState.user = emp;
-                        dropdown.classList.add('hidden');
-                        searchInput.classList.remove('error-ring');
-                        document.querySelector('#field-employee .error-msg').classList.add('hidden');
-                        validateForm();
-                    };
-                    dropdown.appendChild(item);
+            const inp = document.getElementById('empSearchInput'), drop = document.getElementById('empDropdown');
+            inp.addEventListener('input', (e) => {
+                drop.innerHTML = ''; drop.classList.remove('hidden');
+                const f = appData.users.filter(u => u.toLowerCase().includes(e.target.value.toLowerCase()));
+                f.forEach(emp => {
+                    const d = document.createElement('div'); d.className = 'p-4 hover:bg-emerald-50 cursor-pointer border-b font-medium'; d.textContent = emp;
+                    d.onclick = () => { inp.value = emp; currentFormState.user = emp; drop.classList.add('hidden'); validateForm(); };
+                    drop.appendChild(d);
                 });
-            }
-
-            searchInput.addEventListener('focus', () => { dropdown.classList.remove('hidden'); renderList(searchInput.value); });
-            searchInput.addEventListener('input', (e) => { dropdown.classList.remove('hidden'); renderList(e.target.value); currentFormState.user = ''; validateForm(); });
-            
-            // Закриття при кліку поза полем
-            document.addEventListener('click', (e) => {
-                if (!document.getElementById('empSearchContainer').contains(e.target)) {
-                    dropdown.classList.add('hidden');
-                    // Якщо введено текст, але не вибрано зі списку - скидаємо
-                    if(searchInput.value && currentFormState.user !== searchInput.value) {
-                         currentFormState.user = '';
-                         searchInput.classList.add('error-ring');
-                         validateForm();
-                    }
-                }
             });
+            document.addEventListener('click', (e) => { if (!document.getElementById('empSearchContainer').contains(e.target)) drop.classList.add('hidden'); });
         }
 
-        // Рендер списку цільової сировини
         function renderTargetOptions() {
-            const select = document.getElementById('targetSelect');
-            select.innerHTML = '<option value="">-- Оберіть сировину (Артикул) --</option>';
-            appData.recipes.forEach((recipe, index) => {
-                const opt = document.createElement('option');
-                opt.value = index; // Зберігаємо індекс для легкого пошуку
-                opt.textContent = `[${recipe.targetArt}] ${recipe.targetName}`;
-                select.appendChild(opt);
-            });
+            const s = document.getElementById('targetSelect');
+            appData.recipes.forEach((r, i) => s.add(new Option(`[${r.targetArt}] ${r.targetName}`, i)));
         }
 
-        // Обробка вибору цільового продукту
         function handleTargetChange(e) {
             const val = e.target.value;
-            const ingBlock = document.getElementById('ingredientsBlock');
-            const targetWeightCont = document.getElementById('targetWeightContainer');
-            const presBlock = document.getElementById('preservativesBlock');
-            const bpBlock = document.getElementById('byProductsBlock');
-            
-            document.getElementById('ingredientsList').innerHTML = '';
-            document.getElementById('preservativesList').innerHTML = '';
-            document.getElementById('byProductsList').innerHTML = '';
+            ['ingredientsBlock', 'targetWeightContainer', 'preservativesBlock', 'byProductsBlock'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            document.getElementById('ingredientsList').innerHTML = ''; document.getElementById('preservativesList').innerHTML = ''; document.getElementById('byProductsList').innerHTML = '';
             document.getElementById('targetWeight').value = '';
             
-            currentFormState.targetKg = 0;
-            currentFormState.ingredients = [];
-            currentFormState.preservatives = [];
-            currentFormState.byProducts = [];
-
-            if (val === "") {
-                ingBlock.classList.add('hidden');
-                targetWeightCont.classList.add('hidden');
-                presBlock.classList.add('hidden');
-                bpBlock.classList.add('hidden');
-                currentFormState.targetId = '';
-            } else {
-                const recipe = appData.recipes[val];
-                currentFormState.targetId = recipe.targetArt;
-                
-                // 1. Інгредієнти
-                recipe.ingredients.forEach((ing) => {
-                    const div = document.createElement('div');
-                    div.className = 'bg-white p-4 rounded-xl border border-green-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative overflow-hidden';
-                    div.innerHTML = `
+            if (val === "") return;
+            
+            const recipe = appData.recipes[val];
+            currentFormState.targetId = recipe.targetArt;
+            
+            // Render Ingredients
+            recipe.ingredients.forEach((ing) => {
+                document.getElementById('ingredientsList').innerHTML += `
+                    <div class="bg-white p-4 rounded-xl border border-green-200 flex items-center justify-between gap-3 relative">
                         <div class="absolute left-0 top-0 bottom-0 w-1 bg-green-500"></div>
-                        <div class="pl-2">
-                            <div class="text-xs font-bold text-green-600 mb-0.5">${ing.art}</div>
-                            <div class="text-sm sm:text-base font-bold text-slate-700">${ing.name}</div>
-                        </div>
-                        <div class="flex items-center gap-2 w-full sm:w-auto">
-                            <input type="number" data-art="${ing.art}" data-name="${ing.name}" data-unit="${ing.unit || 'КГ'}" placeholder="0" step="${ing.unit === 'ГР' ? '1' : '0.01'}" min="0" class="val-input ing-input input-field text-center font-bold text-green-700 w-full sm:w-28 py-2">
-                            <span class="text-sm font-bold text-slate-400">${ing.unit || 'КГ'}</span>
-                        </div>
-                    `;
-                    document.getElementById('ingredientsList').appendChild(div);
-                });
-                ingBlock.classList.remove('hidden');
-                
-                // 2. Цільовий продукт
-                document.getElementById('targetDisplayArt').textContent = recipe.targetArt;
-                document.getElementById('targetDisplayName').textContent = recipe.targetName;
-                targetWeightCont.classList.remove('hidden');
+                        <div class="pl-2 flex-1"><div class="text-xs font-bold text-green-600">${ing.art}</div><div class="text-sm font-bold text-slate-700">${ing.name}</div></div>
+                        <div class="flex items-center gap-2"><input type="number" data-art="${ing.art}" data-name="${ing.name}" data-unit="КГ" placeholder="0" class="val-input ing-input input-field text-center font-bold text-green-700 w-24 py-2"><span class="text-sm font-bold text-slate-400">КГ</span></div>
+                    </div>`;
+            });
+            document.getElementById('ingredientsBlock').classList.remove('hidden');
+            
+            // Render Target
+            document.getElementById('targetDisplayArt').textContent = recipe.targetArt;
+            document.getElementById('targetDisplayName').textContent = recipe.targetName;
+            document.getElementById('targetWeightContainer').classList.remove('hidden');
 
-                // 3. Консерванти
-                if (recipe.preservatives && recipe.preservatives.length > 0) {
-                    recipe.preservatives.forEach((pres) => {
-                        const div = document.createElement('div');
-                        div.className = 'bg-cyan-50 p-4 rounded-xl border border-cyan-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative overflow-hidden';
-                        div.innerHTML = `
+            // Render Preservatives (with Recipe Note)
+            if (recipe.preservatives && recipe.preservatives.length > 0) {
+                recipe.preservatives.forEach((pres) => {
+                    document.getElementById('preservativesList').innerHTML += `
+                        <div class="bg-cyan-50 p-4 rounded-xl border border-cyan-200 flex flex-col justify-between gap-3 relative">
                             <div class="absolute left-0 top-0 bottom-0 w-1 bg-cyan-500"></div>
-                            <div class="pl-2">
-                                <div class="text-xs font-bold text-cyan-600 mb-0.5">${pres.art}</div>
-                                <div class="text-sm sm:text-base font-bold text-slate-700">${pres.name}</div>
+                            <div class="flex justify-between items-center pl-2 w-full">
+                                <div class="flex-1"><div class="text-xs font-bold text-cyan-600">${pres.art}</div><div class="text-sm font-bold text-slate-700">${pres.name}</div></div>
+                                <div class="flex items-center gap-2"><input type="number" data-art="${pres.art}" data-name="${pres.name}" data-unit="ГР" placeholder="0" class="val-input pres-input input-field text-center font-bold text-cyan-700 w-24 py-2"><span class="text-sm font-bold text-slate-400">ГР</span></div>
                             </div>
-                            <div class="flex items-center gap-2 w-full sm:w-auto">
-                                <input type="number" data-art="${pres.art}" data-name="${pres.name}" data-unit="${pres.unit || 'ГР'}" placeholder="0" step="${pres.unit === 'ГР' ? '1' : '0.01'}" min="0" class="val-input pres-input input-field text-center font-bold text-cyan-700 w-full sm:w-28 py-2 border-cyan-200 focus:border-cyan-500 focus:ring-cyan-500">
-                                <span class="text-sm font-bold text-slate-400">${pres.unit || 'ГР'}</span>
-                            </div>
-                        `;
-                        document.getElementById('preservativesList').appendChild(div);
-                    });
-                    presBlock.classList.remove('hidden');
-                } else {
-                    presBlock.classList.add('hidden');
-                }
-
-                // 4. Побічні продукти
-                if (recipe.byProducts && recipe.byProducts.length > 0) {
-                    recipe.byProducts.forEach((bp) => {
-                        const div = document.createElement('div');
-                        div.className = 'bg-amber-50 p-4 rounded-xl border border-amber-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative overflow-hidden';
-                        div.innerHTML = `
-                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
-                            <div class="pl-2">
-                                <div class="text-xs font-bold text-amber-600 mb-0.5">${bp.art}</div>
-                                <div class="text-sm sm:text-base font-bold text-slate-700">${bp.name}</div>
-                            </div>
-                            <div class="flex items-center gap-2 w-full sm:w-auto">
-                                <input type="number" data-art="${bp.art}" data-name="${bp.name}" data-unit="${bp.unit || 'КГ'}" placeholder="0.00" step="0.01" min="0" class="val-input bp-input input-field text-center font-bold text-amber-700 w-full sm:w-28 py-2 border-amber-200 focus:border-amber-500 focus:ring-amber-500">
-                                <span class="text-sm font-bold text-slate-400">${bp.unit || 'КГ'}</span>
-                            </div>
-                        `;
-                        document.getElementById('byProductsList').appendChild(div);
-                    });
-                    bpBlock.classList.remove('hidden');
-                } else {
-                    bpBlock.classList.add('hidden');
-                }
-                
-                // Додаємо слухачі
-                document.querySelectorAll('.val-input').forEach(inp => {
-                    inp.addEventListener('input', validateForm);
+                            <div class="pl-2"><span class="text-[11px] font-bold text-cyan-700 bg-cyan-100 px-2 py-1 rounded-md inline-block">💡 Рецепт: 10гр на 10 кг готового продукту</span></div>
+                        </div>`;
                 });
+                document.getElementById('preservativesBlock').classList.remove('hidden');
             }
+
+            // Render ByProducts
+            if (recipe.byProducts && recipe.byProducts.length > 0) {
+                recipe.byProducts.forEach((bp) => {
+                    document.getElementById('byProductsList').innerHTML += `
+                        <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 flex items-center justify-between gap-3 relative">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+                            <div class="pl-2 flex-1"><div class="text-xs font-bold text-amber-600">${bp.art}</div><div class="text-sm font-bold text-slate-700">${bp.name}</div></div>
+                            <div class="flex items-center gap-2"><input type="number" data-art="${bp.art}" data-name="${bp.name}" data-unit="КГ" placeholder="0" class="val-input bp-input input-field text-center font-bold text-amber-700 w-24 py-2"><span class="text-sm font-bold text-slate-400">КГ</span></div>
+                        </div>`;
+                });
+                document.getElementById('byProductsBlock').classList.remove('hidden');
+            }
+            
+            document.querySelectorAll('.val-input').forEach(inp => inp.addEventListener('input', validateForm));
             validateForm();
         }
 
-        // Валідація всієї форми перед розблокуванням кнопки
         function validateForm() {
             let isValid = true;
-            
-            if(!currentFormState.user) isValid = false;
-            
-            const targetSel = document.getElementById('targetSelect');
-            if(targetSel.value === "") isValid = false;
+            if(!currentFormState.user || document.getElementById('targetSelect').value === "") isValid = false;
 
-            const valInputs = document.querySelectorAll('.val-input');
-            if(valInputs.length > 0) {
-                valInputs.forEach(inp => {
-                    const val = parseFloat(inp.value);
-                    if(isNaN(val) || val <= 0) {
-                        isValid = false;
-                        if(inp.classList.contains('target-input')) inp.classList.remove('border-orange-500', 'bg-orange-100');
-                        if(inp.classList.contains('ing-input')) inp.classList.remove('border-green-500', 'bg-green-50');
-                        if(inp.classList.contains('pres-input')) inp.classList.remove('border-cyan-500', 'bg-cyan-50');
-                        if(inp.classList.contains('bp-input')) inp.classList.remove('border-amber-500', 'bg-amber-50');
-                    } else {
-                        if(inp.classList.contains('target-input')) inp.classList.add('border-orange-500', 'bg-orange-100');
-                        if(inp.classList.contains('ing-input')) inp.classList.add('border-green-500', 'bg-green-50');
-                        if(inp.classList.contains('pres-input')) inp.classList.add('border-cyan-500', 'bg-cyan-50');
-                        if(inp.classList.contains('bp-input')) inp.classList.add('border-amber-500', 'bg-amber-50');
-                    }
-                });
-            } else {
-                isValid = false; 
+            const targetWt = parseFloat(document.getElementById('targetWeight').value) || 0;
+            if(targetWt <= 0) isValid = false;
+
+            // 1. Валідація Інгредієнтів (Має бути хоча б 1 заповнений)
+            let hasIngredients = false;
+            const ingInputs = document.querySelectorAll('.ing-input');
+            if (ingInputs.length > 0) {
+                ingInputs.forEach(inp => { if (parseFloat(inp.value) > 0) hasIngredients = true; });
+                if (!hasIngredients) { isValid = false; document.getElementById('ingErrorMsg').classList.remove('hidden'); } 
+                else { document.getElementById('ingErrorMsg').classList.add('hidden'); }
             }
+
+            // 2. Валідація Консерванту (Бензоату)
+            let presValid = true;
+            const presErrorMsg = document.getElementById('presErrorMsg');
+            const expectedSpan = document.getElementById('expectedPres');
+            
+            document.querySelectorAll('.pres-input').forEach(inp => {
+                if (inp.dataset.art === 'ADD-D-002') {
+                    let entered = parseFloat(inp.value) || 0;
+                    let expected = targetWt; // 10гр на 10кг = 1гр на 1кг
+                    
+                    if (targetWt > 0 && entered !== expected) {
+                        inp.classList.add('error-ring');
+                        presErrorMsg.classList.remove('hidden');
+                        expectedSpan.textContent = `За рецептом потрібно: ${expected} гр.`;
+                        presValid = false;
+                        isValid = false;
+                    } else {
+                        inp.classList.remove('error-ring');
+                        if (entered > 0) inp.classList.add('border-cyan-500', 'bg-cyan-50');
+                    }
+                }
+            });
+            if (presValid) presErrorMsg.classList.add('hidden');
 
             const btn = document.getElementById('btnPreview');
             if(isValid) {
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-                btn.classList.add('hover:bg-emerald-700', 'active:scale-95');
+                btn.disabled = false; btn.classList.remove('opacity-50', 'cursor-not-allowed'); btn.classList.add('hover:bg-emerald-700', 'active:scale-95');
             } else {
-                btn.disabled = true;
-                btn.classList.add('opacity-50', 'cursor-not-allowed');
-                btn.classList.remove('hover:bg-emerald-700', 'active:scale-95');
+                btn.disabled = true; btn.classList.add('opacity-50', 'cursor-not-allowed'); btn.classList.remove('hover:bg-emerald-700', 'active:scale-95');
             }
         }
 
-        // Генерація унікального ID
-        function generateOpId() {
-            const now = new Date();
-            const pad = (n) => n.toString().padStart(2, '0');
-            return `OP-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
-        }
-
-        // Підготовка до прев'ю
         function preparePreview() {
-            const recipeIdx = document.getElementById('targetSelect').value;
-            const recipe = appData.recipes[recipeIdx];
-            
-            currentFormState.operationId = generateOpId();
+            const recipe = appData.recipes[document.getElementById('targetSelect').value];
+            currentFormState.operationId = `OP-${Date.now().toString().slice(-6)}`;
             currentFormState.targetKg = parseFloat(document.getElementById('targetWeight').value);
             
+            // ФУНКЦІЯ ПЕРЕТВОРЕННЯ В КГ!
             const extractData = (selector) => {
                 const arr = [];
                 document.querySelectorAll(selector).forEach(inp => {
-                    arr.push({ art: inp.dataset.art, name: inp.dataset.name, val: parseFloat(inp.value), unit: inp.dataset.unit });
+                    let v = parseFloat(inp.value) || 0;
+                    if (v > 0) {
+                        let finalKg = inp.dataset.unit === 'ГР' ? (v / 1000) : v; // Переводимо ГР в КГ для відправки
+                        arr.push({ art: inp.dataset.art, name: inp.dataset.name, val: finalKg, unit: 'КГ' });
+                    }
                 });
                 return arr;
             };
@@ -558,242 +355,72 @@
             currentFormState.preservatives = extractData('.pres-input');
             currentFormState.byProducts = extractData('.bp-input');
 
-            // Заповнюємо модалку
-            document.getElementById('opIdDisplay').textContent = currentFormState.operationId;
+            // Заповнюємо модалку форматом ART NAME - VAL КГ
             document.getElementById('previewUser').textContent = currentFormState.user;
-            document.getElementById('previewTargetName').innerHTML = `<span class="text-xs text-orange-500 block">${recipe.targetArt}</span>${recipe.targetName}`;
-            document.getElementById('previewTargetWeight').textContent = currentFormState.targetKg + ' КГ';
+            document.getElementById('previewTarget').innerHTML = `
+                <li class="py-2 flex justify-between items-center text-sm font-bold text-slate-700">
+                    <span>${recipe.targetArt} ${recipe.targetName}</span><span class="text-orange-600 whitespace-nowrap ml-2">- ${currentFormState.targetKg} КГ</span>
+                </li>`;
 
-            // Інгредієнти
-            const ulIng = document.getElementById('previewIngredients');
-            ulIng.innerHTML = '';
-            currentFormState.ingredients.forEach(item => {
-                ulIng.innerHTML += `
-                    <li class="py-2 flex justify-between items-center">
-                        <div class="pr-2">
-                            <span class="text-[10px] bg-green-200 text-green-800 px-1.5 py-0.5 rounded mr-1">${item.art}</span>
-                            <span class="text-sm font-medium text-slate-700">${item.name}</span>
-                        </div>
-                        <span class="font-bold text-green-700 whitespace-nowrap">${item.val} ${item.unit}</span>
-                    </li>
-                `;
-            });
-
-            // Консерванти
-            const ulPres = document.getElementById('previewPreservatives');
-            const contPres = document.getElementById('previewPreservativesContainer');
-            if (currentFormState.preservatives.length > 0) {
-                ulPres.innerHTML = '';
-                currentFormState.preservatives.forEach(item => {
-                    ulPres.innerHTML += `
-                        <li class="py-2 flex justify-between items-center">
-                            <div class="pr-2">
-                                <span class="text-[10px] bg-cyan-200 text-cyan-800 px-1.5 py-0.5 rounded mr-1">${item.art}</span>
-                                <span class="text-sm font-medium text-slate-700">${item.name}</span>
-                            </div>
-                            <span class="font-bold text-cyan-700 whitespace-nowrap">${item.val} ${item.unit}</span>
-                        </li>
-                    `;
-                });
-                contPres.classList.remove('hidden');
-            } else {
-                contPres.classList.add('hidden');
-            }
-
-            // Побічні продукти
-            const ulBp = document.getElementById('previewByProducts');
-            const contBp = document.getElementById('previewByProductsContainer');
-            if (currentFormState.byProducts.length > 0) {
-                ulBp.innerHTML = '';
-                currentFormState.byProducts.forEach(item => {
-                    ulBp.innerHTML += `
-                        <li class="py-2 flex justify-between items-center">
-                            <div class="pr-2">
-                                <span class="text-[10px] bg-amber-200 text-amber-800 px-1.5 py-0.5 rounded mr-1">${item.art}</span>
-                                <span class="text-sm font-medium text-slate-700">${item.name}</span>
-                            </div>
-                            <span class="font-bold text-amber-700 whitespace-nowrap">${item.val} ${item.unit}</span>
-                        </li>
-                    `;
-                });
-                contBp.classList.remove('hidden');
-            } else {
-                contBp.classList.add('hidden');
-            }
-
-            const modal = document.getElementById('confirmModal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        // Відправка даних
-        async function submitOperation() {
-            const btnSub = document.getElementById('btnSubmit');
-            const spinner = document.getElementById('submitSpinner');
-            
-            btnSub.disabled = true;
-            spinner.classList.remove('hidden');
-
-            const payload = {
-                action: "save_operation",
-                timestamp: new Date().toISOString(),
-                ...currentFormState,
-                targetName: appData.recipes[document.getElementById('targetSelect').value].targetName
+            const fillList = (id, data, color) => {
+                const ul = document.getElementById(id); ul.innerHTML = '';
+                if(data.length > 0) {
+                    data.forEach(item => ul.innerHTML += `<li class="py-2 flex justify-between items-center text-sm font-bold text-slate-700"><span>${item.art} ${item.name}</span><span class="text-${color}-600 whitespace-nowrap ml-2">- ${item.val} КГ</span></li>`);
+                    document.getElementById(id+'Container').classList.remove('hidden');
+                } else document.getElementById(id+'Container').classList.add('hidden');
             };
 
-            if (!navigator.onLine) {
-                saveToOfflineQueue(payload);
-                closeModal();
-                showSuccessToast(true);
-                return;
-            }
+            fillList('previewIngredients', currentFormState.ingredients, 'green');
+            fillList('previewPreservatives', currentFormState.preservatives, 'cyan');
+            fillList('previewByProducts', currentFormState.byProducts, 'amber');
 
-            try {
-                if (GOOGLE_SCRIPT_URL === 'ВАШ_URL_СКРИПТА_ТУТ') {
-                    // Імітація затримки для демо
-                    await new Promise(r => setTimeout(r, 1000));
-                    closeModal();
-                    showSuccessToast(false);
-                } else {
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors', // Важливо для GAS
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    closeModal();
-                    showSuccessToast(false);
-                }
-            } catch (error) {
-                console.error("Помилка відправки:", error);
-                saveToOfflineQueue(payload);
-                closeModal();
-                showSuccessToast(true); // Збережено офлайн
-            } finally {
-                btnSub.disabled = false;
-                spinner.classList.add('hidden');
-            }
+            document.getElementById('confirmModal').classList.remove('hidden'); document.getElementById('confirmModal').classList.add('flex');
         }
 
-        // Допоміжні функції
+        async function submitOperation() {
+            const btn = document.getElementById('btnSubmit'), sp = document.getElementById('submitSpinner');
+            btn.disabled = true; sp.classList.remove('hidden');
+
+            const payload = { timestamp: new Date().toISOString(), ...currentFormState, targetName: appData.recipes[document.getElementById('targetSelect').value].targetName };
+
+            if (!navigator.onLine) { saveToOfflineQueue(payload); closeModal(); showSuccessToast(true); return; }
+
+            try {
+                if(GOOGLE_SCRIPT_URL === 'ВАШ_URL_СКРИПТА_ТУТ') await new Promise(r => setTimeout(r, 1000));
+                else await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                closeModal(); showSuccessToast(false);
+            } catch (e) { saveToOfflineQueue(payload); closeModal(); showSuccessToast(true); } 
+            finally { btn.disabled = false; sp.classList.add('hidden'); }
+        }
+
         function setupEventListeners() {
             document.getElementById('targetSelect').addEventListener('change', handleTargetChange);
-            document.getElementById('targetWeight').addEventListener('input', validateForm);
             document.getElementById('btnPreview').addEventListener('click', preparePreview);
-            
             document.getElementById('btnCancel').addEventListener('click', closeModal);
             document.getElementById('btnSubmit').addEventListener('click', submitOperation);
         }
-
-        function closeModal() {
-            const modal = document.getElementById('confirmModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        function resetForm() {
-            currentFormState.targetId = '';
-            currentFormState.targetKg = 0;
-            currentFormState.ingredients = [];
-            currentFormState.preservatives = [];
-            currentFormState.byProducts = [];
-            
-            document.getElementById('targetSelect').value = "";
-            document.getElementById('ingredientsBlock').classList.add('hidden');
-            document.getElementById('targetWeightContainer').classList.add('hidden');
-            document.getElementById('preservativesBlock').classList.add('hidden');
-            document.getElementById('byProductsBlock').classList.add('hidden');
-            
-            document.getElementById('targetWeight').value = '';
-            document.getElementById('targetDisplayArt').textContent = '';
-            document.getElementById('targetDisplayName').textContent = '';
-            document.getElementById('ingredientsList').innerHTML = '';
-            document.getElementById('preservativesList').innerHTML = '';
-            document.getElementById('byProductsList').innerHTML = '';
-            
-            // Залишаємо користувача вибраним для наступної операції!
-            validateForm();
-        }
-
-        function showSuccessToast(isOffline) {
-            document.getElementById('toastIcon').textContent = '✅';
-            document.getElementById('toastMessage').textContent = 'Операцію збережено!';
-            document.getElementById('toastSubMessage').textContent = isOffline ? 'Дані збережені на пристрої. Відправка відбудеться при появі інтернету.' : 'Дані відправлено в таблицю та на пошту.';
-            
+        function closeModal() { document.getElementById('confirmModal').classList.add('hidden'); document.getElementById('confirmModal').classList.remove('flex'); }
+        function showSuccessToast(offline) {
+            document.getElementById('toastIcon').textContent = '✅'; document.getElementById('toastMessage').textContent = 'Операцію збережено!';
+            document.getElementById('toastSubMessage').textContent = offline ? 'Збережено офлайн.' : 'Відправлено!';
             const t = document.getElementById('customToast'), c = document.getElementById('customToastContent');
-            t.classList.remove('hidden'); 
-            requestAnimationFrame(() => { 
-                t.classList.remove('opacity-0'); 
-                c.classList.remove('scale-90', 'opacity-0'); 
-                c.classList.add('scale-100', 'opacity-100'); 
-            });
-            
-            setTimeout(() => { 
-                t.classList.add('opacity-0'); 
-                c.classList.remove('scale-100', 'opacity-100'); 
-                c.classList.add('scale-90', 'opacity-0'); 
-                setTimeout(() => { 
-                    t.classList.add('hidden'); 
-                    resetForm(); 
-                }, 300); 
-            }, 3000);
+            t.classList.remove('hidden'); requestAnimationFrame(() => { t.classList.remove('opacity-0'); c.classList.remove('scale-90', 'opacity-0'); c.classList.add('scale-100', 'opacity-100'); });
+            setTimeout(() => { t.classList.add('opacity-0'); c.classList.remove('scale-100', 'opacity-100'); c.classList.add('scale-90', 'opacity-0'); setTimeout(() => { t.classList.add('hidden'); location.reload(); }, 300); }, 3000);
         }
-
-        function saveToOfflineQueue(payload) {
-            const q = JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]');
-            q.push(payload);
-            localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(q));
-            updateNetworkStatus();
-        }
-
+        function saveToOfflineQueue(p) { const q = JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]'); q.push(p); localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(q)); updateNetworkStatus(); }
         async function processOfflineQueue() {
             if (!navigator.onLine || GOOGLE_SCRIPT_URL === 'ВАШ_URL_СКРИПТА_ТУТ') return;
-            const q = JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]');
-            if (q.length === 0) return;
-            
-            const newQ = [];
-            document.getElementById('statusText').textContent = 'Синхронізація...';
-            
-            for (const p of q) {
-                try {
-                    await fetch(GOOGLE_SCRIPT_URL, {
-                        method: 'POST',
-                        mode: 'no-cors',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(p)
-                    });
-                } catch (e) {
-                    newQ.push(p); // Якщо помилка - залишаємо в черзі
-                }
-            }
-            localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(newQ));
-            updateNetworkStatus();
+            const q = JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]'); if (q.length === 0) return;
+            const n = []; document.getElementById('statusText').textContent = 'Синхронізація...';
+            for (const p of q) { try { await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(p) }); } catch (e) { n.push(p); } }
+            localStorage.setItem(OFFLINE_QUEUE_KEY, JSON.stringify(n)); updateNetworkStatus();
         }
-
         function updateNetworkStatus() {
-            const online = navigator.onLine;
-            const q = JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]');
-            const dot = document.getElementById('statusDot');
-            const txt = document.getElementById('statusText');
-            
-            if(online) {
-                if(q.length > 0) {
-                    dot.className = 'w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse';
-                    txt.textContent = `Черга: ${q.length}`;
-                } else {
-                    dot.className = 'w-2.5 h-2.5 rounded-full bg-green-500';
-                    txt.textContent = 'Онлайн';
-                }
-            } else {
-                dot.className = 'w-2.5 h-2.5 rounded-full bg-red-500';
-                txt.textContent = 'Офлайн';
-            }
+            const on = navigator.onLine, q = JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY) || '[]');
+            document.getElementById('statusDot').className = `w-2.5 h-2.5 rounded-full ${on ? (q.length>0 ? 'bg-yellow-500 animate-pulse' : 'bg-green-500') : 'bg-red-500'}`;
+            document.getElementById('statusText').textContent = on ? (q.length>0 ? `Черга: ${q.length}` : 'Онлайн') : 'Офлайн';
         }
-
-        function updateClock() {
-            const opts = { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
-            document.getElementById('current-date').textContent = new Date().toLocaleDateString('uk-UA', opts);
-        }
+        function updateClock() { document.getElementById('current-date').textContent = new Date().toLocaleDateString('uk-UA', { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' }); }
     </script>
 </body>
 </html>
