@@ -113,7 +113,7 @@
                     <span class="text-slate-500 text-xs font-bold uppercase tracking-wider block mb-1">Виконавець</span>
                     <span class="font-bold text-slate-800" id="previewUser"></span>
                 </div>
-                <div class="bg-green-50 p-3 rounded-xl border border-green-100">
+                <div id="previewIngredientsContainer" class="bg-green-50 p-3 rounded-xl border border-green-100">
                     <span class="text-green-700 text-xs font-bold uppercase tracking-wider block mb-2">Використано сировини</span>
                     <ul id="previewIngredients" class="space-y-2 divide-y divide-green-100/50"></ul>
                 </div>
@@ -376,10 +376,13 @@
 
             const fillList = (id, data, color) => {
                 const ul = document.getElementById(id); ul.innerHTML = '';
+                const container = document.getElementById(id+'Container');
                 if(data.length > 0) {
                     data.forEach(item => ul.innerHTML += `<li class="py-2 flex justify-between items-center text-sm font-bold text-slate-700"><span>${item.art} ${item.name}</span><span class="text-${color}-600 whitespace-nowrap ml-2">- ${item.val} КГ</span></li>`);
-                    document.getElementById(id+'Container').classList.remove('hidden');
-                } else document.getElementById(id+'Container').classList.add('hidden');
+                    if(container) container.classList.remove('hidden');
+                } else {
+                    if(container) container.classList.add('hidden');
+                }
             };
 
             fillList('previewIngredients', currentFormState.ingredients, 'green');
