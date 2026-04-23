@@ -1,0 +1,20 @@
+{
+  "name": "Переробка Сировини",
+  "short_name": "Переробка",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#10b981",
+  "icons": [
+    {
+      "src": "Gemini_Generated_Image_xfihmnxfihmnxfih.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "Gemini_Generated_Image_xfihmnxfihmnxfih.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
