@@ -3,7 +3,7 @@
   "short_name": "Переробка",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#f8fafc",
+  "background_color": "#ff8afb",
   "theme_color": "#10b981",
   "icons": [
     {
